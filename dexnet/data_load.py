@@ -33,9 +33,8 @@ def create_dataloaders(target_path: pathlib.Path, batch_size: int = 32) -> Tuple
     train_dataset = DexDataset(target_path=train_path, transform=train_transforms)
     test_dataset = DexDataset(target_path=test_path, transform=test_transforms)
 
-    print(f"Train dataset imported. Length: {len(train_dataset)}")
-    print(f"Test dataset imported. Length: {len(test_dataset)}")
-    print(f"First el: {train_dataset[0][0].shape}")
+    print(f"Train dataset imported and it contains {len(train_dataset)} samples")
+    print(f"Test dataset imported and it contains {len(test_dataset)} samples")
 
     train_dataloader = DataLoader(
         dataset=train_dataset,

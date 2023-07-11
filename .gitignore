@@ -2,5 +2,6 @@ __pycache__
 venv
 .idea
 
-# Ignoring images directories
+
 data/pokemons
+models
