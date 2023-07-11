@@ -1,10 +1,10 @@
+import typing
 import torchvision
 from torchvision import transforms
-from typing import Tuple
 
 
 def get_image_transform(
-        size: Tuple[int, int, int] = (3, 224, 224),
+        size: typing.Tuple[int, int, int] = (3, 224, 224),
         interpolation: transforms.InterpolationMode = transforms.InterpolationMode.NEAREST
 ) -> torchvision.transforms:
     """
