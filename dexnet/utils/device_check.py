@@ -1,7 +1,7 @@
 import torch
 
 
-def set_device() -> str:
+def get_best_device() -> str:
     """
     Defines best usable computational device (CPU, GPU or etc.).
     :return: Device label string.
