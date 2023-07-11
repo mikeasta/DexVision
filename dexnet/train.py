@@ -3,8 +3,8 @@ import timeit
 import pathlib
 import torch
 
+from torchinfo import summary
 from torchmetrics import Accuracy
-from tqdm.auto import tqdm
 from dexnet.classes.PokemonClassifierModel import PokemonClassifierModel
 from dexnet.data_load import create_dataloaders
 from dexnet.dexio import save_weights, load_weights
@@ -13,16 +13,12 @@ from dexnet.utils.device_check import get_best_device
 
 def train(
         data_directory: str,
-        model_save_directory: str = None,
-        model: torch.nn.Module = None,
         epochs: int = 50
 ) -> None:
     """
-    Train baseline for PokemonClassifierModel
+    Train baseline for PokemonClassifierModel.
 
     :param data_directory: Directory, from which images would be loaded
-    :param model_save_directory: Directory to save current model state
-    :param model: torch.nn.Module model
     :param epochs: Amount of epochs
     :return:
     """
@@ -42,9 +38,16 @@ def train(
 
     model.to(device)
 
+    # Summary
+    summary(model=model, input_size=(1, 3, 64, 64))
+
     # 2. Loss, optimizer and metrics
     loss_fn = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(params=model.parameters(), lr=0.01)
+    optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
+                                                           mode="min",
+                                                           factor=0.5,
+                                                           threshold=10e-4)
     accuracy_fn = Accuracy(task="multiclass", num_classes=4)
 
     # 3. Train loop
@@ -65,6 +68,8 @@ def train(
             loss.backward()
             optimizer.step()
 
+            scheduler.step(loss)
+
         train_loss /= len(train_dataloader)
         train_acc /= len(train_dataloader)
 
@@ -82,11 +87,12 @@ def train(
             test_loss /= len(test_dataloader)
             test_acc /= len(test_dataloader)
 
-        print(f"\nEpoch {epoch+1}:",
-              f"train - acc = {train_acc}, loss = {train_loss} | test - acc = {test_acc}, loss = {test_loss}",
+        print(f"Epoch {epoch+1}:",
+              f"train - acc = {train_acc:.5f}, loss = {train_loss:.5f}",
+              f"| test - acc = {test_acc:.5f}, loss = {test_loss:.5f}",
               sep=" ")
 
-        if (epoch+1) % 10 == 0:
+        if (epoch+1) % 100 == 0:
             save_weights(model)
 
     end_time = timeit.default_timer()
@@ -94,4 +100,4 @@ def train(
 
 
 if __name__ == "__main__":
-    train("../data/pokemons/", epochs=10)
+    train("../data/pokemons/", epochs=1000)

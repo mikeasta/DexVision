@@ -17,13 +17,13 @@ def create_dataloaders(target_path: pathlib.Path, batch_size: int = 32) -> Tuple
     :return: Train and test dataloaders.
     """
     train_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.ToTensor()
     ])
 
     test_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize((64, 64)),
         transforms.ToTensor()
     ])
 

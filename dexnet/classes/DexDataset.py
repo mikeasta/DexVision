@@ -24,7 +24,7 @@ class DexDataset(Dataset):
 
     def load_image(self, index: int):
         image_path = self.paths[index]
-        return Image.open(image_path)
+        return Image.open(image_path).convert("RGB")
 
     def __getitem__(self, index: int) -> Tuple[torch.Tensor, int]:
         image = self.load_image(index)

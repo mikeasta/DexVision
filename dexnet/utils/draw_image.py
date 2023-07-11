@@ -1,9 +1,9 @@
 import os
-import torch
 import pathlib
 import random
 import matplotlib.pyplot as plt
 from PIL import Image
+from torchvision import transforms
 
 
 def draw_random_images(amount: int = 1, directory: str = None) -> None:
@@ -20,10 +20,14 @@ def draw_random_images(amount: int = 1, directory: str = None) -> None:
         raise FileNotFoundError(f"Directory {path} is empty (req. PNG images) or doesn't exist.")
 
     plt.figure(figsize=(10, 6))
+
+    transform = transforms.Compose([
+        transforms.Resize((64, 64))
+    ])
+
     for i in range(amount):
         image_path = random.choice(images_paths)
-        image = Image.open(image_path)
-
+        image = transform(Image.open(image_path))
         plt.subplot(1, amount, i+1)
         plt.imshow(image)
         plt.title(image_path.parent.name)
@@ -47,4 +51,4 @@ def draw_image(image: Image, title: str = None, save_dir: str = "../plots/draw_i
 
 
 if __name__ == "__main__":
-    draw_random_images(directory="../../data/pokemons/train/Pikachu/", amount=5)
+    draw_random_images(directory="../../data/pokemons/train/Squirtle/", amount=5)
