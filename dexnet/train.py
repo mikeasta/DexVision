@@ -2,6 +2,7 @@ import os
 import timeit
 import pathlib
 import torch
+import torchvision
 
 from torchinfo import summary
 from torchmetrics import Accuracy
@@ -23,6 +24,16 @@ def train(
     :param epochs: Amount of epochs
     :return:
     """
+    print(f"Train process started:",
+          f"="*80,
+          f"- Torch version: {torch.__version__}.",
+          f"- Torchvision version: {torchvision.__version__}.",
+          f"- Using device: {get_best_device()}.",
+          f"- Model: {PokemonClassifierModel().__class__.__name__}.",
+          f"- Train/test data path: {data_directory}.",
+          f"- Epochs: {epochs}.",
+          f"="*80,
+          sep="\n")
     # 1. Load data
     device = get_best_device()
 
