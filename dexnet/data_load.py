@@ -5,6 +5,7 @@ from torchvision import transforms
 from torch.utils.data import DataLoader
 from typing import Tuple
 
+from dexnet.utils.draw_image import draw_image
 from dexnet.classes.DexDataset import DexDataset
 
 
@@ -35,6 +36,7 @@ def create_dataloaders(target_path: pathlib.Path, batch_size: int = 32) -> Tuple
 
     print(f"Train dataset imported and it contains {len(train_dataset)} samples")
     print(f"Test dataset imported and it contains {len(test_dataset)} samples")
+    print(f"Classes: {train_dataset.class_to_idx}")
 
     train_dataloader = DataLoader(
         dataset=train_dataset,

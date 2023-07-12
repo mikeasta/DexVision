@@ -35,19 +35,19 @@ def draw_random_images(amount: int = 1, directory: str = None) -> None:
         plt.savefig("../plots/random_images")
 
 
-def draw_image(image: Image, title: str = None, save_dir: str = "../plots/draw_image_res") -> None:
+def draw_image(image: Image, save_path: str, title: str = None) -> None:
     """
     Draws special image, opened with PIL.Image, and saves it.
 
     :param image: PIL.Image representation.
+    :param save_path: Save image directory.
     :param title: Plot title.
-    :param save_dir: File path to save plot.
     """
     plt.figure(figsize=(8, 8))
     plt.imshow(image)
     plt.title(title)
     plt.axis(False)
-    plt.savefig(save_dir)
+    plt.savefig(save_path)
 
 
 if __name__ == "__main__":

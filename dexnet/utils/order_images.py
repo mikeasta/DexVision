@@ -27,3 +27,7 @@ def rename_all() -> None:
     for class_name in class_names:
         order_rename(train_path / class_name)
         order_rename(test_path / class_name)
+
+
+if __name__ == "__main__":
+    order_rename(images_path=pathlib.Path("../../data/input/"))

@@ -43,11 +43,8 @@ def train(
 
     # 2. Loss, optimizer and metrics
     loss_fn = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
-                                                           mode="min",
-                                                           factor=0.5,
-                                                           threshold=10e-4)
+    optimizer = torch.optim.SGD(params=model.parameters(), lr=0.1)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, mode="min")
     accuracy_fn = Accuracy(task="multiclass", num_classes=4)
 
     # 3. Train loop
@@ -68,10 +65,9 @@ def train(
             loss.backward()
             optimizer.step()
 
-            scheduler.step(loss)
-
         train_loss /= len(train_dataloader)
         train_acc /= len(train_dataloader)
+        scheduler.step(train_loss)
 
         model.eval()
         with torch.inference_mode():
@@ -87,12 +83,12 @@ def train(
             test_loss /= len(test_dataloader)
             test_acc /= len(test_dataloader)
 
-        print(f"Epoch {epoch+1}:",
+        print(f"Epoch {epoch+1}, learning rate = {optimizer.param_groups[0]['lr']}:",
               f"train - acc = {train_acc:.5f}, loss = {train_loss:.5f}",
               f"| test - acc = {test_acc:.5f}, loss = {test_loss:.5f}",
               sep=" ")
 
-        if (epoch+1) % 100 == 0:
+        if (epoch+1) % 50 == 0:
             save_weights(model)
 
     end_time = timeit.default_timer()
@@ -100,4 +96,4 @@ def train(
 
 
 if __name__ == "__main__":
-    train("../data/pokemons/", epochs=1000)
+    train("../data/pokemons/", epochs=5000)

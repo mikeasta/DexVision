@@ -10,17 +10,17 @@ class PokemonClassifierModel(nn.Module):
     """
     def __init__(self):
         super().__init__()
-        self.block_1 = nn.Sequential(
+        self.conv_block_1 = nn.Sequential(
             nn.Conv2d(
                 in_channels=3,
-                out_channels=128,
+                out_channels=16,
                 padding=1,
                 kernel_size=3
             ),
             nn.ReLU(),
             nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
+                in_channels=16,
+                out_channels=16,
                 padding=1,
                 kernel_size=3
             ),
@@ -28,73 +28,34 @@ class PokemonClassifierModel(nn.Module):
             nn.MaxPool2d(2, 2)
         )
 
-        self.block_2 = nn.Sequential(
+        self.conv_block_2 = nn.Sequential(
             nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
+                in_channels=16,
+                out_channels=16,
                 padding=1,
                 kernel_size=3
             ),
             nn.ReLU(),
             nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
-                padding=1,
-                kernel_size=3
-            ),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2)
-        )
-
-        self.block_3 = nn.Sequential(
-            nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
-                padding=1,
-                kernel_size=3
-            ),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
+                in_channels=16,
+                out_channels=16,
                 padding=1,
                 kernel_size=3
             ),
             nn.ReLU(),
             nn.MaxPool2d(2, 2)
-        )
-
-        self.block_4 = nn.Sequential(
-            nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
-                padding=1,
-                kernel_size=3
-            ),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
-                padding=1,
-                kernel_size=3
-            ),
-            nn.ReLU(),
         )
 
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(8192, 4096),
+            nn.Linear(16 * 16 * 16, 32),
             nn.ReLU(),
-            nn.Linear(4096, 4096),
-            nn.ReLU(),
-            nn.Linear(4096, 4)
+            nn.Linear(32, 4)
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.block_1(x)
-        x = self.block_2(x)
-        x = self.block_3(x)
-        x = self.block_4(x)
+        x = self.conv_block_1(x)
+        x = self.conv_block_2(x)
         x = self.classifier(x)
 
         return x
