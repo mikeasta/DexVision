@@ -5,7 +5,7 @@ from torch import nn
 class PokemonClassifierModel(nn.Module):
     """
         For this project was created a model, which architecture was inspired by VGG16 architecture.
-        This model architecture can be labeled as clone of AlexNet.
+        This model architecture can be labeled as clone of TinyVGG.
         But channels amount and convolutional layer sizes were increased.
     """
     def __init__(self):

@@ -9,6 +9,7 @@ from dexnet.classes.PokemonClassifierModel import PokemonClassifierModel
 from dexnet.data_load import create_dataloaders
 from dexnet.dexio import save_weights, load_weights
 from dexnet.utils.device_check import get_best_device
+from dexnet.utils.seed import set_seed
 
 
 def train(
@@ -28,13 +29,15 @@ def train(
     data_path = pathlib.Path(data_directory)
     train_dataloader, test_dataloader = create_dataloaders(data_path)
 
+    set_seed()
     model = PokemonClassifierModel()
     models_path = pathlib.Path("models/")
 
     # Load weights
-    if os.listdir(models_path):
-        model.load_state_dict(load_weights())
-        print(f"Model weights loaded")
+    if models_path.is_dir():
+        if os.listdir(models_path):
+            model.load_state_dict(load_weights())
+            print(f"Model weights for training loaded")
 
     model.to(device)
 
@@ -43,7 +46,7 @@ def train(
 
     # 2. Loss, optimizer and metrics
     loss_fn = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(params=model.parameters(), lr=0.1)
+    optimizer = torch.optim.SGD(params=model.parameters(), lr=0.01)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, mode="min")
     accuracy_fn = Accuracy(task="multiclass", num_classes=4)
 
@@ -96,4 +99,4 @@ def train(
 
 
 if __name__ == "__main__":
-    train("../data/pokemons/", epochs=5000)
+    train("../data/pokemons/", epochs=500)
