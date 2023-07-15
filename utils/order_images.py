@@ -19,7 +19,7 @@ def rename_all() -> None:
     [PATHS MUTABLE]:
     Renames all images in test and train directories for all classes
     """
-    data_path = pathlib.Path("../../data/pokemons")
+    data_path = pathlib.Path("../data/pokemons")
     train_path = data_path / "train"
     test_path = data_path / "test"
 
@@ -30,4 +30,4 @@ def rename_all() -> None:
 
 
 if __name__ == "__main__":
-    order_rename(images_path=pathlib.Path("../../data/input/"))
+    order_rename(images_path=pathlib.Path("../data/input/"))

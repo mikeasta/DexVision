@@ -6,11 +6,11 @@ import torchvision
 
 from torchinfo import summary
 from torchmetrics import Accuracy
-from dexnet.classes.PokemonClassifierModel import PokemonClassifierModel
-from dexnet.data_load import create_dataloaders
-from dexnet.dexio import save_weights, load_weights
-from dexnet.utils.device_check import get_best_device
-from dexnet.utils.seed import set_seed
+from model.PokemonClassifierModel import PokemonClassifierModel
+from data_loader.data_load import create_dataloaders
+from utils.dexio import save_weights, load_weights
+from utils import get_best_device
+from utils.seed import set_seed
 
 
 def train(

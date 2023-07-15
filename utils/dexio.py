@@ -2,7 +2,7 @@ import os
 import pathlib
 import torch
 from datetime import datetime
-DEFAULT_MODEL_SAVE_PATH = pathlib.Path("models/")
+DEFAULT_MODEL_SAVE_PATH = pathlib.Path("../models/")
 
 
 def save_weights(model: torch.nn.Module, path: pathlib.Path = DEFAULT_MODEL_SAVE_PATH) -> None:

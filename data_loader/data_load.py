@@ -1,12 +1,9 @@
-import torch
 import pathlib
-import torchvision
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from typing import Tuple
 
-from dexnet.utils.draw_image import draw_image
-from dexnet.classes.DexDataset import DexDataset
+from data_loader.Dataset import DexDataset
 
 
 def create_dataloaders(target_path: pathlib.Path, batch_size: int = 32) -> Tuple[DataLoader, DataLoader]:

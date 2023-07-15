@@ -2,11 +2,11 @@ import os
 import random
 import shutil
 import pathlib
-from dexnet.utils import seed
+from utils import seed
 
 
 def split_images_into_train_test(
-        train_ratio: float = 0.75,
+        train_ratio: float = 0.9,
         shuffle: bool = False
 ) -> None:
     """
@@ -17,7 +17,7 @@ def split_images_into_train_test(
     :param shuffle: Should we shuffle images while splitting?
     :return:
     """
-    data_path = pathlib.Path('../../data/pokemons')
+    data_path = pathlib.Path('../data/pokemons')
     images_path = data_path / "images"
     train_path = data_path / "train"
     test_path = data_path / "test"
