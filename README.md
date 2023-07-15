@@ -1,6 +1,6 @@
 # DexNet: Pokemon Classifier
 My first computer vision object classifying project.
-
+<!--
 ## How to use
 1. Clone repository on your machine with:
 ```bash
