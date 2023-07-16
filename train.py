@@ -6,10 +6,10 @@ import torchvision
 
 from torchinfo import summary
 from torchmetrics import Accuracy
-from model.PokemonClassifierModel import PokemonClassifierModel
+from model.model import PokemonClassifierModel
 from data_loader.data_load import create_dataloaders
 from utils.dexio import save_weights, load_weights
-from utils import get_best_device
+from utils.device_check import get_best_device
 from utils.seed import set_seed
 
 
