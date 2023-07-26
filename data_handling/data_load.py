@@ -1,9 +1,9 @@
 import pathlib
-from torchvision import transforms
 from torch.utils.data import DataLoader
 from typing import Tuple
 
-from data_loader.Dataset import DexDataset
+from data_handling.transforms import ImageTransforms
+from data_handling.dataset import CustomImageFolder
 
 
 def create_dataloaders(target_path: pathlib.Path, batch_size: int = 32) -> Tuple[DataLoader, DataLoader]:
@@ -14,22 +14,15 @@ def create_dataloaders(target_path: pathlib.Path, batch_size: int = 32) -> Tuple
     :param batch_size: Batch size for loading into model.
     :return: Train and test dataloaders.
     """
-    train_transforms = transforms.Compose([
-        transforms.Resize((64, 64)),
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.ToTensor()
-    ])
-
-    test_transforms = transforms.Compose([
-        transforms.Resize((64, 64)),
-        transforms.ToTensor()
-    ])
+    image_transforms = ImageTransforms(image_size=(64, 64))
+    train_transforms = image_transforms.train_image_transforms()
+    test_transforms = image_transforms.test_image_transforms()
 
     train_path = target_path / "train"
     test_path = target_path / "test"
 
-    train_dataset = DexDataset(target_path=train_path, transform=train_transforms)
-    test_dataset = DexDataset(target_path=test_path, transform=test_transforms)
+    train_dataset = CustomImageFolder(target_path=train_path, transform=train_transforms)
+    test_dataset = CustomImageFolder(target_path=test_path, transform=test_transforms)
 
     print(f"Train dataset imported and it contains {len(train_dataset)} samples")
     print(f"Test dataset imported and it contains {len(test_dataset)} samples")

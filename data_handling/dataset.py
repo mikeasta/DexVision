@@ -7,16 +7,13 @@ from torch.utils.data import Dataset
 
 def find_classes(path: pathlib.Path) -> Tuple[List[str], Dict[str, int]]:
     classes = sorted(entry.name for entry in path.iterdir() if entry.is_dir())
-
     if not classes:
         raise FileNotFoundError(f"No classes in {path} directory.")
-
     class_to_idx = {name: idx for idx, name in enumerate(classes)}
-
     return classes, class_to_idx
 
 
-class DexDataset(Dataset):
+class CustomImageFolder(Dataset):
     def __init__(self, target_path: pathlib.Path, transform) -> None:
         self.paths = list(target_path.glob("*/*.png"))
         self.transform = transform
@@ -30,12 +27,9 @@ class DexDataset(Dataset):
         image = self.load_image(index)
         class_name = self.paths[index].parent.name
         class_idx = self.class_to_idx[class_name]
-
         if self.transform:
-            return self.transform(image), class_idx
-        else:
-            raise TypeError(f"No transform for images. ",
-                            f"Trying to return inappropriate image datatype (req. torch.Tensor).")
+            image = self.transform(image)
+        return image,  class_idx
 
     def __len__(self) -> int:
         return len(self.paths)

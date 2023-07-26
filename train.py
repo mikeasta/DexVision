@@ -7,7 +7,7 @@ import torchvision
 from torchinfo import summary
 from torchmetrics import Accuracy
 from model.model import PokemonClassifierModel
-from data_loader.data_load import create_dataloaders
+from data_handling.data_load import create_dataloaders
 from utils.dexio import save_weights, load_weights
 from utils.device_check import get_best_device
 from utils.seed import set_seed
@@ -42,7 +42,7 @@ def train(
 
     set_seed()
     model = PokemonClassifierModel()
-    models_path = pathlib.Path("models/")
+    models_path = pathlib.Path("saved/models/")
 
     # Load weights
     if models_path.is_dir():
@@ -110,4 +110,4 @@ def train(
 
 
 if __name__ == "__main__":
-    train("../data/pokemons/", epochs=500)
+    train("../datasets/pokemons/", epochs=500)
